@@ -37,6 +37,9 @@ $f3->route('GET|POST /order', function($f3) {
                 case "dog":
                     $_SESSION['animal'] = new Dog($animal);
                     break;
+                case "bengal":
+                    $_SESSION['animal'] = new Bengal($animal);
+                    break;
                 default:
                     $_SESSION['animal'] = new Pet($animal);
             }
@@ -54,7 +57,7 @@ $f3->route('GET|POST /order2', function($f3) {
     if (isset($_POST['color'])) {
         $color = $_POST['color'];
         if (validColor($color)) {
-            $_SESSION['color'] = $color;
+            $_SESSION['animal']->setColor($color);
             $f3->reroute('/results');
         } else {
             $f3->set("errors['color']", "Please enter a color");
