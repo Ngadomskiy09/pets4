@@ -30,7 +30,16 @@ $f3->route('GET|POST /order', function($f3) {
     if(isset($_POST['animalName'])) {
         $animal = $_POST['animalName'];
         if (validString($animal)) {
-            $_SESSION['animal'] = $animal;
+            switch(strtolower($animal)){
+                case "cat":
+                    $_SESSION['animal'] = new Cat($animal);
+                    break;
+                case "dog":
+                    $_SESSION['animal'] = new Dog($animal);
+                    break;
+                default:
+                    $_SESSION['animal'] = new Pet($animal);
+            }
             $f3->reroute('/order2');
         } else {
             $f3->set("errors['animal']", "Please enter an animal");
