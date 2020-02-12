@@ -1,5 +1,4 @@
 <?php
-session_start();
 
 // turn on error reporting
 ini_set('display_errors', 1);
@@ -8,6 +7,8 @@ error_reporting(E_ALL);
 // require autoload file
 require("vendor/autoload.php");
 require("model/validation-functions.php");
+
+session_start();
 
 // Instantiate F3
 $f3 = Base::instance();
