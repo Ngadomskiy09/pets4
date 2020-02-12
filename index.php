@@ -54,15 +54,33 @@ $f3->route('GET|POST /order', function($f3) {
 
 $f3->route('GET|POST /order2', function($f3) {
 //    var_dump($_POST);
-    if (isset($_POST['color'])) {
-        $color = $_POST['color'];
-        if (validColor($color)) {
-            $_SESSION['animal']->setColor($color);
-            $f3->reroute('/results');
+    if($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $f3->set('name', $_POST['name']);
+        $f3->set('passedColor', $_POST[$_POST['color']]);
+
+        $valid = true;
+        if (isset($_POST['color']) && validColor($_POST['color'])) {
+            $_SESSION['animal']->setColor($_POST['color']);
         } else {
+            $valid = false;
             $f3->set("errors['color']", "Please enter a color");
         }
+
+        $animalName = $_POST['name'];
+        if (isset($animalName) && validString($animalName)) {
+            $_SESSION['animal']->setName($animalName);
+        } else {
+            $valid = false;
+            $f3->set("errors['name']", "Please enter an animal name");
+        }
     }
+
+
+
+    if($valid){
+        $f3->reroute('/results');
+    }
+
     $view = new Template();
     echo $view->render('views/form2.html');
 });
